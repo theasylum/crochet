@@ -1,0 +1,26 @@
+ESPRESSObin
+===========
+
+Status: In progress
+
+What is a ESPRESSOBin
+---------------------
+
+The ESPRESSObin is a dual-core 64-bit A53 single board computer.  Details can
+be found at:
+
+   http://espressobin.net/
+
+You boot it from a MicroSDHC card with the system image.
+
+
+How to boot the ESPRESSObin
+---------------------------
+
+1. Update the U-Boot using the ARMbian provided U-Boot files: https://www.armbian.com/espressobin/
+
+2. Run the following commands from the U-Boot serial shell after upgrading:
+
+    load mmc 0:1 $kernel_addr efi/boot/bootaa64.efi
+    load mmc load mmc 0:1 $fdt_addr armada-3720-espressobin.dtb
+    bootefi $kernel_addr $fdt_addr

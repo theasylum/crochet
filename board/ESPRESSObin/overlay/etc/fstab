@@ -1,0 +1,3 @@
+/dev/ufs/rootfs     /   ufs     rw  1   1
+/dev/msdosfs/BOOT   /boot/efi   msdosfs     rw,noatime  0   0
+tmpfs   /tmp    tmpfs   rw,mode=1777,size=50m   0   0
