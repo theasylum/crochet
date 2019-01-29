@@ -210,19 +210,15 @@ strategy_add $PHASE_PARTITION_LWW espressobin_partition_image
 
 espressobin_uboot_install ( ) {
     echo bootaa64 > startup.nsh
-    mkdir -p EFI/BOOT
+    mkdir -p efi/boot
+    mkdir -p fdt/
+    freebsd_install_fdt ../../gnu/dts/arm64/marvell/armada-3720-espressobin.dts fdt/armada-3720-espressobin.dtb
 }
 strategy_add $PHASE_BOOT_INSTALL espressobin_uboot_install
 
 # Build & install loader.efi.
 strategy_add $PHASE_BUILD_OTHER freebsd_loader_efi_build
-strategy_add $PHASE_BOOT_INSTALL freebsd_loader_efi_copy EFI/BOOT/bootaa64.efi
-
-# Copy an FDT file.  The file is read from the FreeBSD source tree by
-# default.  If the suffixes don't match, this function will
-# automatically invoke the DTC compiler as necessary:
-#
-strategy_add $PHASE_BOOT_INSTALL freebsd_install_fdt ../../gnu/dts/arm64/marvell/armada-3720-espressobin.dts ${BOARD_BOOT_MOUNTPOINT}/armada-3720-espressobin.dtb
+strategy_add $PHASE_BOOT_INSTALL freebsd_loader_efi_copy efi/boot/bootaa64.efi
 
 # Examples that just copy one or more files; note we can use '.' here
 # because PHASE_BOOT_INSTALL sets cwd appropriately:
@@ -252,6 +248,9 @@ strategy_add $PHASE_BOOT_INSTALL freebsd_install_fdt ../../gnu/dts/arm64/marvell
 # partition.  A helper makes this easy:
 #
 strategy_add $PHASE_FREEBSD_BOARD_INSTALL board_default_installkernel .
+
+# We mount the fat file system here
+strategy_add $PHASE_FREEBSD_BOARD_INSTALL mkdir -p boot/efi
 
 ########################################################################
 #
