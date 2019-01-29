@@ -525,6 +525,7 @@ freebsd_install_fdt ( ) (
                 *.dtb)
 		    _DTBOUT=$2
 		    cp ${_DTBINTERMEDIATEDIR}/*.dtb ${_DTBOUT}
+            echo "Placed the output in ${_DTBOUT}"
                     ;;
                 *)
                     echo "Can't compile $1 to $2"
