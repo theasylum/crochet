@@ -439,7 +439,7 @@ freebsd_loader_efi_build ( ) {
 freebsd_loader_efi_copy ( ) {
     target=${PWD}
     LOGFILE=${WORKDIR}/_.loader.efi.install.${CONF}.log
-    [ "$1" != "." ] && target="$1"
+    [ "$1" != "." ] && TARGET="$1"
     echo "Installing boot1.efi in ${TARGET}"
     cp ${WORKDIR}/efi-${CONF}/boot/boot1.efi $1 || exit 1
 }
@@ -494,8 +494,11 @@ freebsd_install_fdt ( ) (
     buildenv=`cd $FREEBSD_SRC; make TARGET_ARCH=$TARGET_ARCH buildenvvars`
     buildenv_machine=`eval $buildenv _freebsd_get_machine`;
     _FDTDIR=$FREEBSD_SRC/sys/dts
+    echo "Attempting to locate ${1} in ${_FDTDIR}, like so: ${_FDTDIR}/${buildenv_machine}/${1}"
     if [ -f ${_FDTDIR}/${buildenv_machine}/${1} ]; then
         _FDTDIR=${_FDTDIR}/${buildenv_machine}
+    else
+        echo "Path was not found. Continuing anyway..."
     fi
     mkdir -p ${WORKDIR}/fdt
     _DTBINTERMEDIATEDIR=`mktemp -d ${WORKDIR}/fdt/fdt.XXXXXX`
@@ -517,6 +520,7 @@ freebsd_install_fdt ( ) (
                 *.dts)
 		    _DTSOUT=$2
 		    dtc -I dtb -O dts ${_DTBINTERMEDIATEDIR}/*.dtb > ${_DTSOUT}
+            echo "Placed the output in ${_DTSOUT}"
                     ;;
                 *.dtb)
 		    _DTBOUT=$2
