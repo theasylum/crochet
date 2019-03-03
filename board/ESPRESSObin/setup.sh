@@ -27,7 +27,7 @@
 
 # There are a bunch of standard shell variables.  These three
 # should be defined by any board definition:
-KERNCONF=ESPRESSO
+KERNCONF=GENERIC
 TARGET_ARCH=aarch64
 IMAGE_SIZE=$((1000 * 1000 * 1000))
 # Right now, the kernel config must be part of the FreeBSD source
